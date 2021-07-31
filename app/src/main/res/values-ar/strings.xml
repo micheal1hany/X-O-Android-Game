@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="btn_one_player">لاعب واحد</string>
+    <string name="btn_two_player">لاعبان</string>
+    <string name="btn_settings">الأعدادات</string>
+    <string name="game_board">لوحة اللعبة</string>
+    <string name="settings_fragment">الأعدادات</string>
+    <string name="dialog_message">الاعب رقم %d هو الرابح !!</string>
+    <string name="play_again">العب مرة اخري</string>
+    <string name="back">الرجوع</string>
+    <string name="player_turn">دور %s</string>
+    <string name="dialog_title">احسنت %s</string>
+    <string name="tie_dialog_title">عذرا %s</string>
+    <string name="tie_dialog_message">يبدو انه تعادلاً</string>
+    <string name="time_out_title">اسف !!</string>
+    <string name="time_out_message">لقد نفذ الوقت</string>
+    <string name="language_btn">اللغة</string>
+    <string name="sound_btn">الصوت</string>
+    <string name="mute_btn">كاتم</string>
+    <string name="popup_title_txt">من فضلك اختر لغتك</string>
+    <string name="done">حسناً</string>
+    <string name="app_name">X O Game</string>
+    <string name="timer_txt">٠٠:٠%d</string>
+
+</resources>
