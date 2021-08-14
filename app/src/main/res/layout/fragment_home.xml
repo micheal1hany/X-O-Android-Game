@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="homeFragment"
-            type="com.example.xogame.HomeFragment" />
+            type="com.micheal.xogame.HomeFragment" />
 
     </data>
 
@@ -17,11 +18,10 @@
 
         <ImageView
             android:id="@+id/home_background"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:alpha="0.2"
             android:scaleType="centerCrop"
-            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -70,6 +70,18 @@
             app:layout_constraintHorizontal_bias="0.500"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_two_player" />
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/homeAdView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-7003901998192619/8257123451"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+        </com.google.android.gms.ads.AdView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

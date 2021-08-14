@@ -15,8 +15,8 @@
     <string name="time_out_title">اسف !!</string>
     <string name="time_out_message">لقد نفذ الوقت</string>
     <string name="language_btn">اللغة</string>
-    <string name="sound_btn">الصوت</string>
-    <string name="mute_btn">كاتم</string>
+    <string name="sound_btn">موسيقي</string>
+    <string name="mute_btn">صامت</string>
     <string name="popup_title_txt">من فضلك اختر لغتك</string>
     <string name="done">حسناً</string>
     <string name="app_name">X O Game</string>

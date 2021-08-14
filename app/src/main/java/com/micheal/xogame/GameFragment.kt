@@ -1,6 +1,7 @@
-package com.example.xogame
+package com.micheal.xogame
 
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -11,14 +12,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
-import com.example.xogame.databinding.FragmentGameBinding
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.micheal.xogame.databinding.FragmentGameBinding
 import java.util.*
 import kotlin.collections.ArrayList
 
 class GameFragment : Fragment() {
 
-    private var binding: FragmentGameBinding? = null
+    private var _binding: FragmentGameBinding? = null
+    private val binding get() = _binding!!
+
+    private var mInterstitialAd: InterstitialAd? = null
 
     private var player1 = ArrayList<Int>()
     private var player2 = ArrayList<Int>()
@@ -30,37 +38,54 @@ class GameFragment : Fragment() {
     private var gameCounter = 0
     private var winner = -1
 
-    private val timer = object : CountDownTimer(10000,1000){
+    private val timer = object : CountDownTimer(10000, 1000) {
         override fun onTick(millisUntilFinished: Long) {
-            binding?.timerTxt?.text = (getString(R.string.timer_txt,millisUntilFinished/1000))
+            binding.timerTxt.text = (getString(R.string.timer_txt, millisUntilFinished / 1000))
 
         }
+
         override fun onFinish() {
-            binding?.timerTxt?.setTextColor(resources.getColor(R.color.bright_red))
+            binding.timerTxt.setTextColor(Color.RED)
             timeOutDialog()
             cancel()
         }
     }
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val fragmentBinding = FragmentGameBinding.inflate(inflater, container, false)
-        binding = fragmentBinding
+        _binding = FragmentGameBinding.inflate(inflater,container,false)
 
-        binding!!.turnTxt.text = getString(R.string.player_turn,"X")
+        //load interstitial add
+        val adRequest = AdRequest.Builder().build()
+        binding.gameAdView.loadAd(adRequest)
+
+        InterstitialAd.load(
+            this.requireContext(),
+            "ca-app-pub-7003901998192619/2081569671",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(addError: LoadAdError) {
+                    mInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    mInterstitialAd = interstitialAd
+                }
+            })
+
+        binding.turnTxt.text = getString(R.string.player_turn, "X")
         timer.start()
 
-        return fragmentBinding.root
+            return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding?.gameFragment = this
+        binding.gameFragment = this
 
     }
 
@@ -85,17 +110,17 @@ class GameFragment : Fragment() {
         if (activePlayer == 1) {
             btnChoice.setBackgroundResource(R.drawable.xicon)
             player1.add(cellID)
-            binding?.turnTxt?.text = getString(R.string.player_turn, "O")
+            binding.turnTxt.text = getString(R.string.player_turn, "O")
             activePlayer = 2
-            if(!twoPlayerBtnClicked) {
+            if (!twoPlayerBtnClicked) {
                 Handler(Looper.getMainLooper()).postDelayed({
                     autoPlay()
-                },500)
+                }, 500)
             }
         } else {
             btnChoice.setBackgroundResource(R.drawable.oicon)
             player2.add(cellID)
-            binding?.turnTxt?.text = getString(R.string.player_turn, "X")
+            binding.turnTxt.text = getString(R.string.player_turn, "X")
             activePlayer = 1
         }
         btnChoice.isEnabled = false
@@ -106,7 +131,7 @@ class GameFragment : Fragment() {
 
 
         //row1
-        if(winner == -1) {
+        if (winner == -1) {
             if (player1.contains(1) && player1.contains(2) && player1.contains(3)) {
                 winner = 1
             }
@@ -172,7 +197,9 @@ class GameFragment : Fragment() {
             gameCounter++
         }
 
-        if(gameCounter == 9 && winner == -1){winner = 3}
+        if (gameCounter == 9 && winner == -1) {
+            winner = 3
+        }
 
         if (winner != -1) {
             when (winner) {
@@ -200,14 +227,17 @@ class GameFragment : Fragment() {
             .setCancelable(false)
             .setNegativeButton(R.string.back) { _, _ ->
                 findNavController().navigate(R.id.action_gameFragment_to_homeFragment)
-                twoPlayerBtnClicked =false
+                twoPlayerBtnClicked = false
+                if(mInterstitialAd != null){
+                    mInterstitialAd?.show(this.requireActivity())
+                }
             }
             .setPositiveButton(R.string.play_again) { _, _ ->
                 restartGame()
             }
             .show()
 
-        binding?.turnTxt?.visibility = View.GONE
+        binding.turnTxt.visibility = View.GONE
     }
 
     private fun tieDialog() {
@@ -224,15 +254,15 @@ class GameFragment : Fragment() {
             }
             .show()
 
-        binding?.turnTxt?.visibility = View.GONE
+        binding.turnTxt.visibility = View.GONE
     }
 
-    private fun restartGame(){
+    private fun restartGame() {
         findNavController().navigate(R.id.action_gameFragment_self)
 
     }
 
-    private fun timeOutDialog(){
+    private fun timeOutDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.time_out_title)
             .setMessage(R.string.time_out_message)
@@ -246,7 +276,7 @@ class GameFragment : Fragment() {
             }
             .show()
 
-        binding?.turnTxt?.visibility = View.GONE
+        binding.turnTxt.visibility = View.GONE
 
     }
 
@@ -261,24 +291,24 @@ class GameFragment : Fragment() {
         }
 
         //select random cells
-        if(emptyCells.size !=0) {
+        if (emptyCells.size != 0) {
             val random = Random().nextInt((emptyCells.size))
             val compCellID = emptyCells[random]
 
             //assign the cells
             val btnSelect: Button
             when (compCellID) {
-                1 -> btnSelect = binding!!.btn1
-                2 -> btnSelect = binding!!.btn2
-                3 -> btnSelect = binding!!.btn3
-                4 -> btnSelect = binding!!.btn4
-                5 -> btnSelect = binding!!.btn5
-                6 -> btnSelect = binding!!.btn6
-                7 -> btnSelect = binding!!.btn7
-                8 -> btnSelect = binding!!.btn8
-                9 -> btnSelect = binding!!.btn9
+                1 -> btnSelect = binding.btn1
+                2 -> btnSelect = binding.btn2
+                3 -> btnSelect = binding.btn3
+                4 -> btnSelect = binding.btn4
+                5 -> btnSelect = binding.btn5
+                6 -> btnSelect = binding.btn6
+                7 -> btnSelect = binding.btn7
+                8 -> btnSelect = binding.btn8
+                9 -> btnSelect = binding.btn9
                 else -> {
-                    btnSelect = binding!!.btn1
+                    btnSelect = binding.btn1
                 }
             }
 
@@ -296,6 +326,6 @@ class GameFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding = null
+        _binding = null
     }
 }

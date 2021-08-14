@@ -7,7 +7,7 @@
 
         <variable
             name="gameFragment"
-            type="com.example.xogame.GameFragment" />
+            type="com.micheal.xogame.GameFragment" />
 
     </data>
 
@@ -133,5 +133,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="00:09" />
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/gameAdView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-7003901998192619/3446622234"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+        </com.google.android.gms.ads.AdView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
