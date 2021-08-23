@@ -57,7 +57,18 @@ class HomeFragment : Fragment() {
         binding.homeFragment = this
     }
 
+    override fun onPause() {
+        binding.homeAdView.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        binding.homeAdView.resume()
+        super.onResume()
+    }
+
     override fun onDestroyView() {
+        binding.homeAdView.destroy()
         super.onDestroyView()
         _binding = null
     }

@@ -3,7 +3,6 @@ package com.micheal.xogame
 import android.content.Context
 import android.content.res.Configuration
 import android.media.MediaPlayer
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
@@ -86,13 +85,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
 
     override fun onPause() {
-        super.onPause()
         backGroundMusic.pause()
+        super.onPause()
 
     }
 
     override fun onResume() {
-        super.onResume()
         backGroundMusic.start()
+        super.onResume()
     }
 }

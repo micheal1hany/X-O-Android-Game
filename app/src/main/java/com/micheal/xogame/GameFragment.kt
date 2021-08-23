@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
@@ -58,23 +59,12 @@ class GameFragment : Fragment() {
     ): View {
         _binding = FragmentGameBinding.inflate(inflater,container,false)
 
-        //load interstitial add
+        //load banner add
         val adRequest = AdRequest.Builder().build()
         binding.gameAdView.loadAd(adRequest)
 
-        InterstitialAd.load(
-            this.requireContext(),
-            "ca-app-pub-7003901998192619/2081569671",
-            adRequest,
-            object : InterstitialAdLoadCallback() {
-                override fun onAdFailedToLoad(addError: LoadAdError) {
-                    mInterstitialAd = null
-                }
-
-                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    mInterstitialAd = interstitialAd
-                }
-            })
+        //load interstitial ad
+        loadInterstitialAd()
 
         binding.turnTxt.text = getString(R.string.player_turn, "X")
         timer.start()
@@ -228,9 +218,7 @@ class GameFragment : Fragment() {
             .setNegativeButton(R.string.back) { _, _ ->
                 findNavController().navigate(R.id.action_gameFragment_to_homeFragment)
                 twoPlayerBtnClicked = false
-                if(mInterstitialAd != null){
-                    mInterstitialAd?.show(this.requireActivity())
-                }
+                showInterstitialAd()
             }
             .setPositiveButton(R.string.play_again) { _, _ ->
                 restartGame()
@@ -248,6 +236,7 @@ class GameFragment : Fragment() {
             .setNegativeButton(R.string.back) { _, _ ->
                 findNavController().navigate(R.id.action_gameFragment_to_homeFragment)
                 twoPlayerBtnClicked = false
+                showInterstitialAd()
             }
             .setPositiveButton(R.string.play_again) { _, _ ->
                 restartGame()
@@ -270,6 +259,7 @@ class GameFragment : Fragment() {
             .setNegativeButton(R.string.back) { _, _ ->
                 findNavController().navigate(R.id.action_gameFragment_to_homeFragment)
                 twoPlayerBtnClicked = false
+                showInterstitialAd()
             }
             .setPositiveButton(R.string.play_again) { _, _ ->
                 restartGame()
@@ -324,7 +314,44 @@ class GameFragment : Fragment() {
         super.onStop()
     }
 
+    private fun loadInterstitialAd(){
+        val adRequest = AdRequest.Builder().build()
+
+        InterstitialAd.load(
+            this.requireContext(),
+            "ca-app-pub-7003901998192619/2081569671",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(addError: LoadAdError) {
+                    mInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    mInterstitialAd = interstitialAd
+                    Toast.makeText(activity, "onAdLoaded()", Toast.LENGTH_SHORT).show()
+                }
+            })
+
+    }
+
+    private fun showInterstitialAd(){
+        if(mInterstitialAd != null){
+            mInterstitialAd?.show(requireActivity())
+        }
+    }
+
+    override fun onPause() {
+        binding.gameAdView.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        binding.gameAdView.resume()
+        super.onResume()
+    }
+
     override fun onDestroyView() {
+        binding.gameAdView.destroy()
         super.onDestroyView()
         _binding = null
     }

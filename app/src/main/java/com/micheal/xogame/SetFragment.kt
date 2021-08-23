@@ -172,8 +172,19 @@ class SetFragment : Fragment() {
         return soundSettings.getInt("sound", 1)
     }
 
+    override fun onPause() {
+        binding.SettingsAdView.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        binding.SettingsAdView.resume()
+        super.onResume()
+    }
+
 
     override fun onDestroyView() {
+        binding.SettingsAdView.destroy()
         super.onDestroyView()
         _binding = null
     }

@@ -3,10 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Programming/AndroidApps/XOGame/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.15555555555555556" />
         <entry key="..\:/Programming/AndroidApps/XOGame/app/src/main/res/layout/activity_main.xml" value="0.209375" />
         <entry key="..\:/Programming/AndroidApps/XOGame/app/src/main/res/layout/fragment_game.xml" value="0.209375" />
         <entry key="..\:/Programming/AndroidApps/XOGame/app/src/main/res/layout/fragment_home.xml" value="0.209375" />
         <entry key="..\:/Programming/AndroidApps/XOGame/app/src/main/res/layout/fragment_set.xml" value="0.209375" />
+        <entry key="..\:/Programming/AndroidApps/XOGame/app/src/main/res/xml/network_security_config.xml" value="0.209375" />
       </map>
     </option>
   </component>
